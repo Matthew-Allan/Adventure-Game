@@ -1,5 +1,9 @@
+
 import random
-from colorama import *
+try:
+    from colorama import *
+except ModuleNotFoundError:
+    from BlackAndWhite import *
 
 class Weapon:
 
@@ -14,6 +18,9 @@ class Weapon:
             self.damage = 45
             self.crit_chance = 10
             self.weight = 25
+
+        elif self.type == "Fist":
+            pass
 
         elif self.type == "Dagger":
             self.damage = 35
@@ -145,6 +152,12 @@ class Weapon:
         self.crit_chance = 1
         self.damage = 5
 
+    def revamp(self):
+        weapon_adjectives = ["Wooden", "Metal", "Diamond", "Sharp", "Blunt", "Broken", "Chipped", "Dented", "Godly", "Magic"]
+        self.adjective = random.choice(weapon_adjectives)
+        self.make_stats()
+        
+
 class Monster:
 
     def __init__(self):
@@ -152,6 +165,7 @@ class Monster:
         monster_adjectives = ["Large", "Strong", "Weak", "Fast", "Deadly", "Heavy", "Tiny", "Powerful", "Evil"]
         self.adjective = random.choice(monster_adjectives)
         self.type = random.choice(monster_types)
+        self.worth = 0
 
     def make_stats(self):
         if self.type == "Zombie":
@@ -160,6 +174,7 @@ class Monster:
             self.weight = 20
             self.health = 100
             self.armor = 20
+            self.worth += 50
 
         elif self.type == "Skeleton":
             self.damage = 35
@@ -167,6 +182,7 @@ class Monster:
             self.weight = 5
             self.health = 150
             self.armor = 50
+            self.worth += 70
 
         elif self.type == "Witch":
             self.damage = 50
@@ -174,6 +190,7 @@ class Monster:
             self.weight = 20
             self.health = 1050
             self.armor = 50
+            self.worth += 250
 
         elif self.type == "Ghoul":
             self.damage = 30
@@ -181,6 +198,7 @@ class Monster:
             self.weight = 0
             self.health = 1500
             self.armor = 150
+            self.worth += 500
 
         elif self.type == "Hunk":
             self.damage = 100
@@ -188,6 +206,7 @@ class Monster:
             self.weight = 100
             self.health = 5000
             self.armor = 350
+            self.worth += 2000
 
         elif self.type == "Snake":
             self.damage = 20
@@ -195,6 +214,7 @@ class Monster:
             self.weight = 10
             self.health = 75
             self.armor = 25
+            self.worth += 20
 
         if self.adjective == "Large":
             self.adjective = "{0}{1}{2}".format(Fore.LIGHTBLACK_EX, self.adjective, Fore.RESET)
@@ -203,6 +223,7 @@ class Monster:
             self.weight += 15
             self.health += 50
             self.armor += 25
+            self.worth += 50
 
         elif self.adjective == "Strong":
             self.adjective = "{0}{1}{2}".format(Fore.LIGHTBLACK_EX, self.adjective, Fore.RESET)
@@ -211,6 +232,7 @@ class Monster:
             self.weight += 15
             self.health += 10
             self.armor += 30
+            self.worth += 50
 
         elif self.adjective == "Weak":
             self.adjective = "{0}{1}{2}".format(Fore.WHITE, self.adjective, Fore.RESET)
@@ -219,6 +241,7 @@ class Monster:
             self.weight -= 5
             self.health -= 20
             self.armor -= 20
+            self.worth -= 10
 
         elif self.adjective == "Fast":
             self.adjective = "{0}{1}{2}".format(Fore.LIGHTCYAN_EX, self.adjective, Fore.RESET)
@@ -227,6 +250,7 @@ class Monster:
             self.weight -= 5
             self.health -= 50
             self.armor = 0
+            self.worth += 60
 
         elif self.adjective == "Deadly":
             self.adjective = "{0}{1}{2}".format(Fore.MAGENTA, self.adjective, Fore.RESET)
@@ -235,6 +259,7 @@ class Monster:
             self.weight += 10
             self.health += 5
             self.armor += 15
+            self.worth += 100
 
         elif self.adjective == "Heavy":
             self.adjective = "{0}{1}{2}".format(Fore.LIGHTBLACK_EX, self.adjective, Fore.RESET)
@@ -243,6 +268,7 @@ class Monster:
             self.weight += 20
             self.health += 100
             self.armor += 50
+            self.worth += 100
 
         elif self.adjective == "Tiny":
             self.adjective = "{0}{1}{2}".format(Fore.WHITE, self.adjective, Fore.RESET)
@@ -251,6 +277,7 @@ class Monster:
             self.weight -= 5
             self.health -= 20
             self.armor -= 50
+            self.worth -= 10
 
         elif self.adjective == "Powerful":
             self.adjective = "{0}{1}{2}".format(Fore.YELLOW, self.adjective, Fore.RESET)
@@ -259,6 +286,7 @@ class Monster:
             self.weight += 15
             self.health += 30
             self.armor += 20
+            self.worth += 100
 
         elif self.adjective == "Evil":
             self.adjective = "{0}{1}{2}".format(Fore.RED, self.adjective, Fore.RESET)
@@ -267,6 +295,7 @@ class Monster:
             self.weight += 5
             self.health += 20
             self.armor += 20
+            self.worth += 100
 
         if self.damage < 1:
             self.damage = 1
@@ -311,6 +340,7 @@ class Monster:
                 self.health = 0
             if self.health == 0:
                 print("You {}killed{} the ".format(Fore.RED, Fore.RESET) + self.name + " with your " + weapon.name + "!")
+                
 
     def stats(self):
         print("Monster:")
@@ -323,10 +353,13 @@ class Monster:
 
 class Player:
 
-    def __init__(self):
-        self.health = random.randint(100,1000)
-        self.armor = random.randint(100,1000)
+    def __init__(self, name):
+        self.name = name
+        self.health = 1000
+        self.armor = 1000
         self.weapons = {"Primary": None, "Secondary": None}
+        self.potions = ["Lesser Health Potion", "Lesser Health Potion"]
+        self.money = 0
 
     def hit(self, monster):
         monster_damage, monster_crit_chance, monster_weight = monster.damage, monster.crit_chance, monster.weight
@@ -357,5 +390,28 @@ class Player:
         print("Name:        You")
         print("Health:      " + str(self.health) + "HP")
         print("Armor:       " + str(self.armor) + "HP")
+
+    def heal(self, potion_indx):
+        if self.potions[potion_indx] == "Lesser Health Potion":
+            self.health += 100
+        elif self.potions[potion_indx] == "Greater Health Potion":
+            self.health += 1000
+        elif self.potions[potion_indx] == "Lesser Armor Potion":
+            self.armor += 100
+        elif self.potions[potion_indx] == "Greater Armor Potion":
+            self.armor += 1000
+        self.potions.pop(potion_indx)
+
+    def give_potion(self):
+        potion_lvls = ["Lesser ", "Geater "]
+        potion_types = ["Armor ", "Health "]
+        potion_lvl = random.choice(potion_lvls)
+        potion_type = random.choice(potion_types)
+        potion_name = potion_lvl + potion_type + "Potion"
+        self.potions.append(potion_name)
+        return potion_name
+
+        self.potions.pop(potion_indx)
+        
 
 
