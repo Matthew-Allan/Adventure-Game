@@ -9,7 +9,7 @@ class Player:
         self.y_parameters = y_parameters
         self.points = points
         self.character = character
-        self.health = 10000000
+        self.health = health
         self.menu = "Main"
         self.hand = {"Primary": "Right Fist", "Secondary": "Left Fist"}
         self.weapons = weapons
@@ -99,7 +99,6 @@ class Player:
 
     def random_collect(self):
         chance = random.randint(1, 100)
-        print(chance)
         if chance < 50:
             items = ["Bracelet", "Mug", "Bone", "Glove", "Cloth", "Weave", "Ring", "Watch", "Stone", "Skull", "Doorknob", "Stick"]
             type = ["Colourful", "Beaded", "Christal Encrusted", "Jade", "Sapphire", "Golden", "Carved", "Chiseled", "Dull"]
