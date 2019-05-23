@@ -1,5 +1,6 @@
 from PlayerClasses import Player
 from EnemyClasses import Enemy
+from MenuClasses import *
 
 
 def iterate(hit_boxes):
@@ -10,8 +11,6 @@ def iterate(hit_boxes):
         hit_boxes[entity.x][entity.y] = " "
         entity.walk(hit_boxes)
         hit_boxes[entity.x][entity.y] = "0"
-        print(str(entity.x) + str(entity.y))
-        print(hit_boxes[entity.x][entity.y])
 
 
 def load_map(name):
@@ -27,31 +26,45 @@ def load_map(name):
 
     hit_boxes_underneath = []
 
-    read = open(name + " Hit Boxes.txt", "r")
-    world_lines = read.readlines()
-    read.close()
+    for row in board_underneath:
+        line = []
+        for pixel in row:
+            if pixel == "+" or pixel == "-" or pixel == "|" or pixel == "O":
+                line.append("1")
+            elif pixel == "D":
+                line.append("0")
+            else:
+                line.append(" ")
+        hit_boxes_underneath.append(line)
 
-    for line in world_lines:
-        hit_boxes_underneath.append([x for x in line.strip('\n')])
+    #read = open(name + " Hit Boxes.txt", "r")
+    #world_lines = read.readlines()
+    #read.close()
+
+    #for line in world_lines:
+    #    hit_boxes_underneath.append([x for x in line.strip('\n')])
 
     return board_underneath, hit_boxes_underneath
 
 
-board_underneath, hit_boxes_underneath = load_map("Houses")
+board_underneath, hit_boxes_underneath = load_map("Houses2")
 
 read = open("save_game.txt", "r")
-info = read.readlines()
+raw_info = read.readlines()
 read.close()
 
-for each in info:
-    info[info.index(each)] = each.strip("\n")
-    print(each)
+info = []
+
+for each in raw_info:
+    info.append(each.strip('\n'))
 
 x = int(info[0])
 y = int(info[1])
 points = int(info[2])
 health = int(info[3])
 character = info[4]
+
+print(info)
 
 curiosities = info[5].split("/")
 curiosities.pop(0)
@@ -72,9 +85,9 @@ enemy3 = Enemy(19, 0, x_parameters, y_parameters, player)
 
 entities = [enemy1, enemy2, enemy3]
 
-while True:
+menu = Menu(player, board_underneath)
 
-    Side_menu = []
+while True:
 
     Screen = []
 
@@ -127,7 +140,7 @@ while True:
  |  ____ |_____| |  |  | |______
  |_____| |     | |  |  | |______              
 """)
-    Screen.append("Points: " + str(player.points))
+    Screen.append("Points: " + str(player.points) + "     Health: " + str(player.health))
     Screen.append(top_string)
     for each in strings:
         Screen.append("|" + each + " |")
@@ -152,6 +165,14 @@ while True:
         wright.close()
         break
 
+    index = 0
+
+    Side_menu = menu.show()
+
+    for each in Side_menu:
+        Screen[index + 3] = Screen[index + 3] + "   " + each
+        index += 1
+
     Screen_string = ""
 
     for line in Screen:
@@ -159,32 +180,29 @@ while True:
 
     print(Screen_string)
 
-    print(player.curiosities)
-
-    print(player.potions)
-
-    print(player.weapons)
-
     instruction = input(":")
 
     if instruction == "w" or instruction == "a" or instruction == "s" or instruction == "d" or instruction == "W" or instruction == "A" or instruction == "S" or instruction == "D":
         player.walk(instruction, hit_boxes)
         iterate(hit_boxes)
 
-    elif instruction == "e":
+    elif instruction.lower() == "q":
         curios = ""
         for curiosity in player.curiosities:
             curios = curios + "/" + curiosity
         potions_string = ""
         for potion in player.potions:
             potions_string = potions_string + "/" + potion
+        weapons_string = ""
+        for weapon in player.weapons:
+            weapons_string = weapons_string + "/" + weapon
         wright = open("save_game.txt", "w")
         wright.write(str(player.x) + "\n" + str(player.y) + "\n" + str(player.points) + "\n" + str(player.health) + "\n"
-                     + str(player.character) + "\n" + str(curios) + "\n" + str(potions_string) + "\n" + "\n-")
+                     + str(player.character) + "\n" + str(curios) + "\n" + str(potions_string) + "\n" + str(weapons_string) + "\n-")
         wright.close()
         break
 
-    elif instruction == "c":
+    elif instruction.lower() == "c":
         while True:
             new_character = input(":")
             if len(new_character) == 1:
@@ -193,5 +211,9 @@ while True:
 
     elif instruction == "":
         iterate(hit_boxes)
+
+    else:
+        menu.navigate(instruction)
+
 
 

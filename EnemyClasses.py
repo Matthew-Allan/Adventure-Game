@@ -34,14 +34,12 @@ class Enemy:
                 if test_y > self.y_parameters:
                     test_y = self.y_parameters
                 if hit_boxes[self.x][test_y] is not "1" and hit_boxes[self.x][test_y] is not "0":
-                    print(hit_boxes[self.x][test_y])
                     self.y = test_y
             elif y_direction == -1:
                 test_y = self.y - 1
                 if test_y < 0:
                     test_y = 0
                 if hit_boxes[self.x][test_y] is not "1" and hit_boxes[self.x][test_y] is not "0":
-                    print(hit_boxes[self.x][test_y])
                     self.y = test_y
         elif y_distance < x_distance:
             if x_direction == 1:
@@ -49,14 +47,12 @@ class Enemy:
                 if test_x > self.x_parameters:
                     test_x = self.x_parameters
                 if hit_boxes[test_x][self.y] is not "1" and hit_boxes[test_x][self.y] is not "0":
-                    print(hit_boxes[test_x][self.y])
                     self.x = test_x
             elif x_direction == -1:
                 test_x = self.x - 1
                 if test_x < 0:
                     test_x = 0
                 if hit_boxes[test_x][self.y] is not "1" and hit_boxes[test_x][self.y] is not "0":
-                    print(hit_boxes[test_x][self.y])
                     self.x = test_x
         else:
             if x_direction == 1:
@@ -64,12 +60,10 @@ class Enemy:
                 if test_x > self.x_parameters:
                     test_x = self.x_parameters
                 if hit_boxes[test_x][self.y] is not "1" and hit_boxes[test_x][self.y] is not "0":
-                    print(hit_boxes[test_x][self.y])
                     self.x = test_x
             elif x_direction == -1:
                 test_x = self.x - 1
                 if test_x < 0:
                     test_x = 0
                 if hit_boxes[test_x][self.y] is not "1" and hit_boxes[test_x][self.y] is not "0":
-                    print(hit_boxes[test_x][self.y])
                     self.x = test_x

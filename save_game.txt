@@ -1,7 +1,9 @@
-11
 1
-5
-9999978
+1
+20
+9
 P
-/Dull Stick/Colourful Glove/Chiseled Bone
-/Lesser Health Potion
+/Jade Watch/Christal Encrusted Doorknob/Christal Encrusted Glove/Sapphire Bone/Sapphire Cloth/Carved Stick
+/Greater Armor Potion/Lesser Health Potion/Lesser Armor Potion/Lesser Armor Potion/Greater Armor Potion/Lesser Health Potion/Greater Armor Potion/Lesser Health Potion/Greater Armor Potion
+/Dented Blade/Diamond Nunchucks/Blunt Mace/Sharp Nunchucks/Metal Bow
+-
